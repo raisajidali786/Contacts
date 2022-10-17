@@ -5,15 +5,9 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.rsa.contacts.view.utils.Constants.REPOSITORY_TAG
 
 class ContactRepository(private val context: Context) {
-    private val contactLiveData = MutableLiveData<ArrayList<ContactsModel>>()
-
-    val contacts: LiveData<ArrayList<ContactsModel>>
-        get() = contactLiveData
 
     //::::....FETCH NUMBERS....:::://
     fun getContactNumbers(): ArrayList<ContactsModel> {

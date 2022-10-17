@@ -1,5 +1,6 @@
 package com.rsa.contacts.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,8 +10,15 @@ import com.rsa.contacts.databinding.CustomContactsItemLayoutBinding
 import com.rsa.contacts.model.ContactsModel
 
 
-class ContactAdapter(private var contactList: ArrayList<ContactsModel>) :
+class ContactAdapter() :
     RecyclerView.Adapter<ContactAdapter.ContactVH>() {
+
+    var contactList = ArrayList<ContactsModel>()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ContactVH {
         val mDeveloperListItemBinding = DataBindingUtil.inflate<CustomContactsItemLayoutBinding>(

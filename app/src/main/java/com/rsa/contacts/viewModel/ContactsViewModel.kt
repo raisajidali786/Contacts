@@ -1,10 +1,7 @@
 package com.rsa.contacts.viewModel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.rsa.contacts.model.ContactRepository
 import com.rsa.contacts.model.ContactsModel
 import kotlinx.coroutines.async
@@ -12,11 +9,9 @@ import kotlinx.coroutines.launch
 
 class ContactsViewModel(private val repository: ContactRepository) :
     AndroidViewModel(Application()) {
-
-    private val contactsMutableLiveData = MutableLiveData<ArrayList<ContactsModel>>()
-    val contactsLiveData: LiveData<ArrayList<ContactsModel>> = contactsMutableLiveData
-
-    fun fetchContacts() {
+    private val _contactsLiveData = MutableLiveData<ArrayList<ContactsModel>>()
+    val contactsLiveData:LiveData<ArrayList<ContactsModel>> = _contactsLiveData
+    fun fetchContact(){
         viewModelScope.launch {
             val contactNumbersAsync = async { repository.getContactNumbers() }
             val contactEmailAsync = async { repository.getEmails() }
@@ -33,8 +28,9 @@ class ContactsViewModel(private val repository: ContactRepository) :
                 it.photos = contactPhotos
                 it.birthdays = contactBirthdays
             }
-            contactsMutableLiveData.postValue(contactNumbers)
+            _contactsLiveData.postValue(contactNumbers)
         }
+
     }
 
 }

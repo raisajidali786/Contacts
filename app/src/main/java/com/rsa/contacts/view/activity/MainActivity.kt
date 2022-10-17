@@ -21,15 +21,20 @@ import com.rsa.contacts.viewModel.ContactsViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var repository: ContactRepository
-
+    private lateinit var contactAdapter: ContactAdapter
     private lateinit var contactViewModel: ContactsViewModel
+    private lateinit var list: ArrayList<ContactsModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         inIt()
         runtimePermission()
+        contactViewModel.contactsLiveData.observe(this) {
+            if (it.isNotEmpty()) {
+                contactAdapter.contactList = it
+            }
+        }
     }
 
     private fun runtimePermission() {
@@ -41,25 +46,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inIt() {
-        repository = ContactRepository(this)
-        contactViewModel = ViewModelProvider(
-            this,
-            ContactViewModelFactory(repository)
-        )[ContactsViewModel::class.java]
+        list = ArrayList()
+        contactViewModel = ViewModelProvider(this,ContactViewModelFactory(ContactRepository(this)))[ContactsViewModel::class.java]
+        setAdapter()
     }
 
-    private fun getAllContact() {
-        contactViewModel.fetchContacts()
-        contactViewModel.contactsLiveData.observe(this) {
-            if (it.isNotEmpty()) {
-                setAdapter(it)
-            }
-        }
-
-    }
-
-    private fun setAdapter(list: ArrayList<ContactsModel>) {
-        val contactAdapter = ContactAdapter(list)
+    private fun setAdapter() {
+        contactAdapter = ContactAdapter()
         binding.contactRecycler.layoutManager = LinearLayoutManager(this)
         binding.contactRecycler.adapter = contactAdapter
     }
@@ -72,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         when (requestCode) {
             READ_CONTACT_REQUEST_CODE -> if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getAllContact()
+                contactViewModel.fetchContact()
             } else {
                 Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show()
             }
