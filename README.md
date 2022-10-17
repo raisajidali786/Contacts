@@ -1,11 +1,12 @@
-# AllContacts
-In this project I fetch contact list with details
+# Feature
+Contact list with details using MVVM in Kotlin
+
+# Details
 1. Name
 2. Number
 3. Image
 4. Email
 5. Birthday
-using MVVM in Kotlin
 
 # Have a look on this
 ![SCREEN_SHOT](https://user-images.githubusercontent.com/79716161/196068446-cd6fad44-581a-477e-8783-22f91c301446.jpeg)
