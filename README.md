@@ -1,5 +1,5 @@
-# Feature
-Contact list with details using MVVM in Kotlin
+# Contact App
+Read all contacts with details using MVVM in Kotlin
 
 # Details
 1. Name
